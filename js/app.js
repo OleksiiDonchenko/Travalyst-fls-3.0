@@ -3382,44 +3382,60 @@
             },
             on: {}
         });
-        if (document.querySelector(".travel-companies-slider")) new swiper_core_Swiper(".travel-companies-slider", {
-            modules: [ Autoplay ],
-            loop: true,
-            loopedSlides: 10,
-            loopAdditionalSlides: 3,
-            slidesPerView: 3,
-            centeredSlides: true,
-            initialSlide: 0,
-            autoplay: {
-                delay: 5e3,
-                disableOnInteraction: false
-            },
-            speed: 1e3
-        });
+        if (document.querySelector(".travel-companies-slider")) {
+            const travelCompaniesSlider = new swiper_core_Swiper(".travel-companies-slider", {
+                modules: [ Autoplay ],
+                loop: true,
+                loopedSlides: 10,
+                loopAdditionalSlides: 3,
+                slidesPerView: 3,
+                centeredSlides: true,
+                initialSlide: 0,
+                autoplay: {
+                    delay: 4e3,
+                    disableOnInteraction: false
+                },
+                speed: 3e3,
+                breakpoints: {
+                    600: {
+                        speed: 1500
+                    }
+                }
+            });
+            window.addEventListener("resize", (function() {
+                if (window.innerWidth <= 600) {
+                    travelCompaniesSlider.autoplay.stop();
+                    travelCompaniesSlider.params.autoplay.delay = 1;
+                    travelCompaniesSlider.autoplay.start();
+                } else {
+                    travelCompaniesSlider.autoplay.stop();
+                    travelCompaniesSlider.params.autoplay.delay = 4e3;
+                    travelCompaniesSlider.autoplay.start();
+                }
+            }));
+        }
         if (document.querySelector(".founders-slider")) {
-            let foundersSlider = new swiper_core_Swiper(".founders-slider", {
+            const foundersSlider = new swiper_core_Swiper(".founders-slider", {
                 modules: [ Navigation ],
                 navigation: {
-                    nextEl: ".swiper-button-next",
-                    prevEl: ".swiper-button-prev"
+                    nextEl: ".founders-slider-button-next",
+                    prevEl: ".founders-slider-button-prev"
                 },
                 loop: true,
+                loopAdditionalSlides: 4,
                 slidesPerView: 5.5,
                 spaceBetween: 84,
                 slideToClickedSlide: true,
                 speed: 500,
                 breakpoints: {
                     320: {
-                        slidesPerView: 1
+                        spaceBetween: 20
                     },
                     480: {
-                        slidesPerView: 3
+                        spaceBetween: 40
                     },
                     768: {
-                        slidesPerView: 4
-                    },
-                    992: {
-                        slidesPerView: 5.5
+                        spaceBetween: 60
                     }
                 }
             });
@@ -3472,7 +3488,7 @@
     const listItems = document.querySelectorAll(".postulates__list-item");
     const numberItems = document.querySelectorAll(".postulates__number-item");
     const postBckgImgs = document.querySelectorAll(".postulates__background-image");
-    const postParagraphs = document.querySelectorAll(".postulates__second-paragraph");
+    const postParagraphs = document.querySelectorAll(".postulates__paragraph");
     let indexPostulates = 0;
     const activeListItem = n => {
         for (let listItem of listItems) listItem.classList.remove("active");
@@ -3538,7 +3554,7 @@
                 const animItem = animItems[i];
                 const animItemHeight = animItem.offsetHeight;
                 const animItemOffset = offset(animItem).top;
-                const animStart = 8;
+                const animStart = 12;
                 let animItemPoint = window.innerHeight - animItemHeight / animStart;
                 if (animItemHeight > window.innerHeight) animItemPoint = window.innerHeight - window.innerHeight / animStart;
                 if (scrollY > animItemOffset - animItemPoint && scrollY < animItemOffset + animItemHeight) animItem.classList.add("_active"); else if (!animItem.classList.contains("_anim-no-hide")) animItem.classList.remove("_active");
@@ -3562,6 +3578,15 @@
     partnershipRulesButton.addEventListener("mouseover", (() => {
         partnershipRulesButton.style.transitionDelay = "0s";
     }));
+    let colorFavicon = "";
+    const favicon = document.querySelector('link[rel="shortcut icon"]');
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        colorFavicon = "light";
+        favicon.href = `${colorFavicon}-favicon.ico`;
+    } else {
+        colorFavicon = "dark";
+        favicon.href = `${colorFavicon}-favicon.ico`;
+    }
     window["FLS"] = true;
     isWebp();
 })();
