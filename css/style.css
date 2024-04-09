@@ -159,10 +159,16 @@ h6 {
   position: absolute;
   width: 100%;
   left: 25px;
-  color: #fff
+  color: #fff;
+  -webkit-transform: translate(0,120%);
+  transform: translate(0,120%);
+  opacity: 0;
+  transition: all .8s ease .4s
 }
 .header__title._active {
-  transition: all .8s ease .4s
+  -webkit-transform: translate(0,0);
+  transform: translate(0,0);
+  opacity: 1
 }
 .footer {
   position: relative;
@@ -304,19 +310,24 @@ body.hasHover .slider-button-next:hover {
   opacity: 0;
   transition: all .8s ease 0s
 }
+.travel-companies._active {
+  -webkit-transform: translate(0,0);
+  transform: translate(0,0);
+  opacity: 1
+}
 .travel-companies__title {
   padding-left: 25px;
   max-width: 660px;
   width: 100%;
   -webkit-transform: translate(0,120%);
   transform: translate(0,120%);
-  opacity: 0
+  opacity: 0;
+  transition: all .8s ease .4s
 }
 .travel-companies__title._active {
   -webkit-transform: translate(0,0);
   transform: translate(0,0);
-  opacity: 1;
-  transition: all .8s ease .4s
+  opacity: 1
 }
 .travel-companies__text {
   max-width: 626px;
@@ -332,28 +343,24 @@ body.hasHover .slider-button-next:hover {
   opacity: 1;
   transition: all .8s ease .4s
 }
-.travel-companies._active {
-  -webkit-transform: translate(0,0);
-  transform: translate(0,0);
-  opacity: 1
-}
 .travel-companies-slider {
-  max-width: 800px;
-  width: 100%;
-  margin: 80px 0;
   -webkit-transform: translate(0,120%);
   transform: translate(0,120%);
-  opacity: 0
-}
-.travel-companies-slider__slide .travel-companies-slider__image {
-  opacity: .1;
-  transition: all .5s ease 0s
+  opacity: 0;
+  transition: all .8s ease .8s
 }
 .travel-companies-slider._active {
   -webkit-transform: translate(0,0);
   transform: translate(0,0);
-  opacity: 1;
-  transition: all .8s ease .8s
+  opacity: 1
+}
+.travel-companies-slider__slide {
+  display: flex;
+  align-items: center
+}
+.travel-companies-slider__slide .travel-companies-slider__image {
+  opacity: .1;
+  transition: all .5s ease 0s
 }
 .swiper-slide-active .travel-companies-slider__image,
 .swiper-slide-next .travel-companies-slider__image,
@@ -376,8 +383,7 @@ body.hasHover .slider-button-next:hover {
   justify-content: space-between
 }
 .founders__blockquotes {
-  position: relative;
-  height: 350px
+  position: relative
 }
 .founders__blockquotes::before {
   display: inline-block;
@@ -420,13 +426,12 @@ body.hasHover .slider-button-next:hover {
   -webkit-transform: translate(0,120%);
   transform: translate(0,120%);
   opacity: 0;
-  transition: all .8s ease 0s
+  transition: all .8s ease .4s
 }
 .founders__blockquote-title._active {
   -webkit-transform: translate(0,0);
   transform: translate(0,0);
-  opacity: 1;
-  transition: all .8s ease .4s
+  opacity: 1
 }
 .founders__blockquote-text {
   line-height: 22px;
@@ -434,13 +439,12 @@ body.hasHover .slider-button-next:hover {
   -webkit-transform: translate(0,120%);
   transform: translate(0,120%);
   opacity: 0;
-  transition: all .8s ease 0s
+  transition: all .8s ease .8s
 }
 .founders__blockquote-text._active {
   -webkit-transform: translate(0,0);
   transform: translate(0,0);
-  opacity: 1;
-  transition: all .8s ease .4s
+  opacity: 1
 }
 .founders__blockquote.active {
   opacity: 1
@@ -451,11 +455,12 @@ body.hasHover .slider-button-next:hover {
   opacity: 1
 }
 .founders-slider-global-wrapper {
-  position: relative
+  position: relative;
+  padding: 0 0 20px 0
 }
 .founders-slider {
   position: relative;
-  min-height: 180px;
+  height: 170px;
   width: 100%;
   max-width: 610px;
   overflow: hidden;
@@ -465,43 +470,32 @@ body.hasHover .slider-button-next:hover {
   transform: translate(0,80%);
   opacity: 0
 }
-.founders-slider__wrapper {
-  min-height: 60px;
-  align-items: center
-}
-.founders-slider__slide {
-  position: relative
-}
-.founders-slider__image {
-  width: 28px;
-  height: 28px
-}
-.founders-slider__image img {
-  width: 28px;
-  height: 28px
-}
-.founders-slider__text {
-  visibility: hidden;
-  opacity: 0;
-  position: absolute;
-  width: 235px;
-  top: 60px;
-  left: -35px;
-  line-height: 22px
-}
-.founders-slider__text h6 {
-  font-weight: 700
-}
 .founders-slider._active {
   -webkit-transform: translate(0,0);
   transform: translate(0,0);
   opacity: 1;
   transition: all .8s ease 0s
 }
+.founders-slider__wrapper {
+  align-items: center
+}
+.founders-slider__slide {
+  height: 100px
+}
+.founders-slider__text {
+  visibility: hidden;
+  opacity: 0;
+  width: 235px;
+  margin: 20px 0 0 -20px;
+  line-height: 22px
+}
+.founders-slider__text h6 {
+  font-weight: 700
+}
 .founders-slider-buttons-position {
   position: absolute;
   width: 100%;
-  top: 10px;
+  top: 30px;
   z-index: 1
 }
 .founders-slider-buttons {
@@ -927,6 +921,8 @@ body.hasHover .sustainably__row-link a:hover {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  -webkit-filter: brightness(.7);
+  filter: brightness(.7);
   transition: all .4s ease 0s;
   z-index: -1;
   opacity: 0
@@ -968,67 +964,64 @@ body.hasHover .sustainably__row-link a:hover {
   -webkit-transform: translate(0,0);
   transform: translate(0,0);
   opacity: 1;
-  transition: all .8s ease .2s
+  transition: all .8s ease .4s
 }
 .postulates__list-items {
   margin: 40px 0 0 40px
-}
-.postulates__list-items li {
-  -webkit-transform: translate(0,120%);
-  transform: translate(0,120%);
-  opacity: 0;
-  transition: all .8s ease 0s
-}
-.postulates__list-items._active li:nth-child(1) {
-  -webkit-transform: translate(0,0);
-  transform: translate(0,0);
-  opacity: .5;
-  transition: all .8s ease 0s
-}
-.postulates__list-items._active li:nth-child(3) {
-  -webkit-transform: translate(0,0);
-  transform: translate(0,0);
-  opacity: .5;
-  transition: all .8s ease .4s
-}
-.postulates__list-items._active li:nth-child(5) {
-  -webkit-transform: translate(0,0);
-  transform: translate(0,0);
-  opacity: .5;
-  transition: all .8s ease .8s
-}
-.postulates__list-items._active li:nth-child(7) {
-  -webkit-transform: translate(0,0);
-  transform: translate(0,0);
-  opacity: .5;
-  transition: all .8s ease 1.2s
 }
 .postulates__list-item {
   display: inline-block;
   font-size: 40px;
   letter-spacing: 1.08px;
   color: #fff;
-  cursor: pointer
+  cursor: pointer;
+  -webkit-transform: translate(0,120%);
+  transform: translate(0,120%);
+  opacity: 0
 }
-.postulates__list-items._active li:nth-child(1).postulates__list-item.yellow.active {
+.postulates__list-item-div {
+  transition: all .5s ease 0s;
+  opacity: .5
+}
+.postulates__list-item-div.yellow.active {
   color: #eaeab6;
-  opacity: 1;
-  transition: all .5s ease 0s
+  opacity: 1
 }
-.postulates__list-items._active li:nth-child(3).postulates__list-item.blue.active {
+.postulates__list-item-div.blue.active {
   color: #b0ebeb;
-  opacity: 1;
-  transition: all .5s ease 0s
+  opacity: 1
 }
-.postulates__list-items._active li:nth-child(5).postulates__list-item.pink.active {
+.postulates__list-item-div.pink.active {
   color: #e0bcaa;
-  opacity: 1;
-  transition: all .5s ease 0s
+  opacity: 1
 }
-.postulates__list-items._active li:nth-child(7).postulates__list-item.gray.active {
+.postulates__list-item-div.gray.active {
   color: #ddd7ec;
+  opacity: 1
+}
+.postulates__list-item.yellow._active {
+  -webkit-transform: translate(0,0);
+  transform: translate(0,0);
   opacity: 1;
-  transition: all .5s ease 0s
+  transition: all .8s ease .8s
+}
+.postulates__list-item.blue._active {
+  -webkit-transform: translate(0,0);
+  transform: translate(0,0);
+  opacity: 1;
+  transition: all .8s ease 1.2s
+}
+.postulates__list-item.pink._active {
+  -webkit-transform: translate(0,0);
+  transform: translate(0,0);
+  opacity: 1;
+  transition: all .8s ease 1.6s
+}
+.postulates__list-item.gray._active {
+  -webkit-transform: translate(0,0);
+  transform: translate(0,0);
+  opacity: 1;
+  transition: all .8s ease 2s
 }
 .postulates__number-item {
   position: absolute;
@@ -1064,11 +1057,11 @@ body.hasHover .sustainably__row-link a:hover {
   padding: 0 50px 0 0;
   color: #fff;
   left: 25px;
-  opacity: 0
+  opacity: 0;
+  transition: all .8s ease 2.2s
 }
-.postulates__paragraph._active.active {
-  opacity: 1;
-  transition: all .8s ease .8s
+.postulates__paragraph.active._active {
+  opacity: 1
 }
 .postulates__paragraph.yellow {
   color: #eaeab6
@@ -1206,7 +1199,6 @@ body.hasHover .partnership-rules__link:hover {
   position: absolute;
   max-width: 340px;
   left: 25px;
-  bottom: 10px;
   letter-spacing: .56px;
   padding: 0 10px 10px 0
 }
@@ -1264,6 +1256,9 @@ body.hasHover .partnership-rules__link:hover {
 @media (min-width:26.5625em) {
   .sustainably__title {
     padding-left: 2.5rem
+  }
+  .partnership-rules-slider__slide-text {
+    top: 9.375rem
   }
 }
 @media (min-width:36.875em) {
@@ -1377,6 +1372,12 @@ body.hasHover .partnership-rules__link:hover {
   }
 }
 @media (min-width:48em) {
+  .travel-companies-slider {
+    padding-top: 5rem
+  }
+  .travel-companies-slider {
+    padding-bottom: 5rem
+  }
   .sustainably__title {
     padding-top: 3.75rem
   }
@@ -1431,7 +1432,7 @@ body.hasHover .partnership-rules__link:hover {
 }
 @media (max-width:991.98px) {
   .founders-slider-buttons-position {
-    top: 75px;
+    top: 100px;
     z-index: 3
   }
   .founders-slider-button-prev {
@@ -1506,9 +1507,6 @@ body.hasHover .partnership-rules__link:hover {
   }
 }
 @media (max-width:599.98px) {
-  .travel-companies-slider {
-    margin: 60px 0
-  }
   .travel-companies-slider__wrapper {
     transition-timing-function: linear
   }
@@ -1553,9 +1551,6 @@ body.hasHover .partnership-rules__link:hover {
   }
 }
 @media (max-width:399.98px) {
-  .travel-companies-slider {
-    margin: 40px 0
-  }
   .travel-companies-slider__image {
     scale: .6
   }
@@ -1594,8 +1589,14 @@ body.hasHover .partnership-rules__link:hover {
   .travel-companies__text {
     padding-bottom: 3.125rem
   }
+  .travel-companies-slider {
+    padding-top: 2.5rem
+  }
+  .travel-companies-slider {
+    padding-bottom: 2.5rem
+  }
   .founders__blockquotes {
-    height: 43.75rem
+    height: 42.5rem
   }
   .founders__blockquotes {
     margin-top: 1.25rem
@@ -1638,6 +1639,9 @@ body.hasHover .partnership-rules__link:hover {
   }
   .partnership-rules__linkAndButtons {
     padding-bottom: 3.125rem
+  }
+  .partnership-rules-slider__slide-text {
+    top: 8.125rem
   }
 }
 @media (max-width:37.5em) {
@@ -1865,15 +1869,77 @@ body.hasHover .partnership-rules__link:hover {
     }
   }
 }
-@media (min-width:20em) and (max-width:45.3125em) {
-  @supports (height:clamp(21.875rem ,61.0339506173rem + -86.4197530864vw ,43.75rem)) {
-    .founders__blockquotes {
-      height: clamp(21.875rem ,61.0339506173rem + -86.4197530864vw ,43.75rem)
+@media (min-width:20em) and (max-width:48em) {
+  @supports (padding-top:clamp(2.5rem ,0.7142857143rem + 8.9285714286vw ,5rem)) {
+    .travel-companies-slider {
+      padding-top: clamp(2.5rem ,.7142857143rem + 8.9285714286vw ,5rem)
     }
   }
-  @supports not (height:clamp(21.875rem ,61.0339506173rem + -86.4197530864vw ,43.75rem)) {
+  @supports not (padding-top:clamp(2.5rem ,0.7142857143rem + 8.9285714286vw ,5rem)) {
+    .travel-companies-slider {
+      padding-top: calc(2.5rem + 2.5 * (100vw - 20rem)/ 28)
+    }
+  }
+  @supports (padding-bottom:clamp(2.5rem ,0.7142857143rem + 8.9285714286vw ,5rem)) {
+    .travel-companies-slider {
+      padding-bottom: clamp(2.5rem ,.7142857143rem + 8.9285714286vw ,5rem)
+    }
+  }
+  @supports not (padding-bottom:clamp(2.5rem ,0.7142857143rem + 8.9285714286vw ,5rem)) {
+    .travel-companies-slider {
+      padding-bottom: calc(2.5rem + 2.5 * (100vw - 20rem)/ 28)
+    }
+  }
+  @supports (padding-top:clamp(1.875rem ,0.5357142857rem + 6.6964285714vw ,3.75rem)) {
+    .sustainably__title {
+      padding-top: clamp(1.875rem ,.5357142857rem + 6.6964285714vw ,3.75rem)
+    }
+  }
+  @supports not (padding-top:clamp(1.875rem ,0.5357142857rem + 6.6964285714vw ,3.75rem)) {
+    .sustainably__title {
+      padding-top: calc(1.875rem + 1.875 * (100vw - 20rem)/ 28)
+    }
+  }
+  @supports (padding-bottom:clamp(1.25rem ,-2.9910714286rem + 21.2053571429vw ,7.1875rem)) {
+    .sustainably__paragraph {
+      padding-bottom: clamp(1.25rem ,-2.9910714286rem + 21.2053571429vw ,7.1875rem)
+    }
+  }
+  @supports not (padding-bottom:clamp(1.25rem ,-2.9910714286rem + 21.2053571429vw ,7.1875rem)) {
+    .sustainably__paragraph {
+      padding-bottom: calc(1.25rem + 5.9375 * (100vw - 20rem)/ 28)
+    }
+  }
+  @supports (padding-top:clamp(3.75rem ,2.4107142857rem + 6.6964285714vw ,5.625rem)) {
+    .postulates__consider {
+      padding-top: clamp(3.75rem ,2.4107142857rem + 6.6964285714vw ,5.625rem)
+    }
+  }
+  @supports not (padding-top:clamp(3.75rem ,2.4107142857rem + 6.6964285714vw ,5.625rem)) {
+    .postulates__consider {
+      padding-top: calc(3.75rem + 1.875 * (100vw - 20rem)/ 28)
+    }
+  }
+  @supports (font-size:clamp(1.625rem ,1rem + 3.125vw ,2.5rem)) {
+    .postulates__list-item {
+      font-size: clamp(1.625rem ,1rem + 3.125vw ,2.5rem)
+    }
+  }
+  @supports not (font-size:clamp(1.625rem ,1rem + 3.125vw ,2.5rem)) {
+    .postulates__list-item {
+      font-size: calc(1.625rem + .875 * (100vw - 20rem)/ 28)
+    }
+  }
+}
+@media (min-width:20em) and (max-width:45.3125em) {
+  @supports (height:clamp(21.875rem ,58.7962962963rem + -81.4814814815vw ,42.5rem)) {
     .founders__blockquotes {
-      height: calc(43.75rem + -21.875 * (100vw - 20rem)/ 25.3125)
+      height: clamp(21.875rem ,58.7962962963rem + -81.4814814815vw ,42.5rem)
+    }
+  }
+  @supports not (height:clamp(21.875rem ,58.7962962963rem + -81.4814814815vw ,42.5rem)) {
+    .founders__blockquotes {
+      height: calc(42.5rem + -20.625 * (100vw - 20rem)/ 25.3125)
     }
   }
   @supports (margin-top:clamp(1.25rem ,-0.2314814815rem + 7.4074074074vw ,3.125rem)) {
@@ -2022,46 +2088,14 @@ body.hasHover .partnership-rules__link:hover {
       padding-left: calc(1.25rem + 1.25 * (100vw - 20rem)/ 6.5625)
     }
   }
-}
-@media (min-width:20em) and (max-width:48em) {
-  @supports (padding-top:clamp(1.875rem ,0.5357142857rem + 6.6964285714vw ,3.75rem)) {
-    .sustainably__title {
-      padding-top: clamp(1.875rem ,.5357142857rem + 6.6964285714vw ,3.75rem)
+  @supports (top:clamp(8.125rem ,4.3154761905rem + 19.0476190476vw ,9.375rem)) {
+    .partnership-rules-slider__slide-text {
+      top: clamp(8.125rem ,4.3154761905rem + 19.0476190476vw ,9.375rem)
     }
   }
-  @supports not (padding-top:clamp(1.875rem ,0.5357142857rem + 6.6964285714vw ,3.75rem)) {
-    .sustainably__title {
-      padding-top: calc(1.875rem + 1.875 * (100vw - 20rem)/ 28)
-    }
-  }
-  @supports (padding-bottom:clamp(1.25rem ,-2.9910714286rem + 21.2053571429vw ,7.1875rem)) {
-    .sustainably__paragraph {
-      padding-bottom: clamp(1.25rem ,-2.9910714286rem + 21.2053571429vw ,7.1875rem)
-    }
-  }
-  @supports not (padding-bottom:clamp(1.25rem ,-2.9910714286rem + 21.2053571429vw ,7.1875rem)) {
-    .sustainably__paragraph {
-      padding-bottom: calc(1.25rem + 5.9375 * (100vw - 20rem)/ 28)
-    }
-  }
-  @supports (padding-top:clamp(3.75rem ,2.4107142857rem + 6.6964285714vw ,5.625rem)) {
-    .postulates__consider {
-      padding-top: clamp(3.75rem ,2.4107142857rem + 6.6964285714vw ,5.625rem)
-    }
-  }
-  @supports not (padding-top:clamp(3.75rem ,2.4107142857rem + 6.6964285714vw ,5.625rem)) {
-    .postulates__consider {
-      padding-top: calc(3.75rem + 1.875 * (100vw - 20rem)/ 28)
-    }
-  }
-  @supports (font-size:clamp(1.625rem ,1rem + 3.125vw ,2.5rem)) {
-    .postulates__list-item {
-      font-size: clamp(1.625rem ,1rem + 3.125vw ,2.5rem)
-    }
-  }
-  @supports not (font-size:clamp(1.625rem ,1rem + 3.125vw ,2.5rem)) {
-    .postulates__list-item {
-      font-size: calc(1.625rem + .875 * (100vw - 20rem)/ 28)
+  @supports not (top:clamp(8.125rem ,4.3154761905rem + 19.0476190476vw ,9.375rem)) {
+    .partnership-rules-slider__slide-text {
+      top: calc(8.125rem + 1.25 * (100vw - 20rem)/ 6.5625)
     }
   }
 }

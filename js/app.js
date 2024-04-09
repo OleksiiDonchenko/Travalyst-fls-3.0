@@ -3118,6 +3118,291 @@
             destroy
         });
     }
+    function classes_to_selector_classesToSelector(classes) {
+        if (classes === void 0) classes = "";
+        return `.${classes.trim().replace(/([\.:!+\/])/g, "\\$1").replace(/ /g, ".")}`;
+    }
+    function A11y(_ref) {
+        let {swiper, extendParams, on} = _ref;
+        extendParams({
+            a11y: {
+                enabled: true,
+                notificationClass: "swiper-notification",
+                prevSlideMessage: "Previous slide",
+                nextSlideMessage: "Next slide",
+                firstSlideMessage: "This is the first slide",
+                lastSlideMessage: "This is the last slide",
+                paginationBulletMessage: "Go to slide {{index}}",
+                slideLabelMessage: "{{index}} / {{slidesLength}}",
+                containerMessage: null,
+                containerRoleDescriptionMessage: null,
+                itemRoleDescriptionMessage: null,
+                slideRole: "group",
+                id: null
+            }
+        });
+        swiper.a11y = {
+            clicked: false
+        };
+        let liveRegion = null;
+        let preventFocusHandler;
+        let focusTargetSlideEl;
+        let visibilityChangedTimestamp = (new Date).getTime();
+        function notify(message) {
+            const notification = liveRegion;
+            if (notification.length === 0) return;
+            notification.innerHTML = "";
+            notification.innerHTML = message;
+        }
+        function getRandomNumber(size) {
+            if (size === void 0) size = 16;
+            const randomChar = () => Math.round(16 * Math.random()).toString(16);
+            return "x".repeat(size).replace(/x/g, randomChar);
+        }
+        function makeElFocusable(el) {
+            el = utils_makeElementsArray(el);
+            el.forEach((subEl => {
+                subEl.setAttribute("tabIndex", "0");
+            }));
+        }
+        function makeElNotFocusable(el) {
+            el = utils_makeElementsArray(el);
+            el.forEach((subEl => {
+                subEl.setAttribute("tabIndex", "-1");
+            }));
+        }
+        function addElRole(el, role) {
+            el = utils_makeElementsArray(el);
+            el.forEach((subEl => {
+                subEl.setAttribute("role", role);
+            }));
+        }
+        function addElRoleDescription(el, description) {
+            el = utils_makeElementsArray(el);
+            el.forEach((subEl => {
+                subEl.setAttribute("aria-roledescription", description);
+            }));
+        }
+        function addElControls(el, controls) {
+            el = utils_makeElementsArray(el);
+            el.forEach((subEl => {
+                subEl.setAttribute("aria-controls", controls);
+            }));
+        }
+        function addElLabel(el, label) {
+            el = utils_makeElementsArray(el);
+            el.forEach((subEl => {
+                subEl.setAttribute("aria-label", label);
+            }));
+        }
+        function addElId(el, id) {
+            el = utils_makeElementsArray(el);
+            el.forEach((subEl => {
+                subEl.setAttribute("id", id);
+            }));
+        }
+        function addElLive(el, live) {
+            el = utils_makeElementsArray(el);
+            el.forEach((subEl => {
+                subEl.setAttribute("aria-live", live);
+            }));
+        }
+        function disableEl(el) {
+            el = utils_makeElementsArray(el);
+            el.forEach((subEl => {
+                subEl.setAttribute("aria-disabled", true);
+            }));
+        }
+        function enableEl(el) {
+            el = utils_makeElementsArray(el);
+            el.forEach((subEl => {
+                subEl.setAttribute("aria-disabled", false);
+            }));
+        }
+        function onEnterOrSpaceKey(e) {
+            if (e.keyCode !== 13 && e.keyCode !== 32) return;
+            const params = swiper.params.a11y;
+            const targetEl = e.target;
+            if (swiper.pagination && swiper.pagination.el && (targetEl === swiper.pagination.el || swiper.pagination.el.contains(e.target))) if (!e.target.matches(classes_to_selector_classesToSelector(swiper.params.pagination.bulletClass))) return;
+            if (swiper.navigation && swiper.navigation.prevEl && swiper.navigation.nextEl) {
+                const prevEls = utils_makeElementsArray(swiper.navigation.prevEl);
+                const nextEls = utils_makeElementsArray(swiper.navigation.nextEl);
+                if (nextEls.includes(targetEl)) {
+                    if (!(swiper.isEnd && !swiper.params.loop)) swiper.slideNext();
+                    if (swiper.isEnd) notify(params.lastSlideMessage); else notify(params.nextSlideMessage);
+                }
+                if (prevEls.includes(targetEl)) {
+                    if (!(swiper.isBeginning && !swiper.params.loop)) swiper.slidePrev();
+                    if (swiper.isBeginning) notify(params.firstSlideMessage); else notify(params.prevSlideMessage);
+                }
+            }
+            if (swiper.pagination && targetEl.matches(classes_to_selector_classesToSelector(swiper.params.pagination.bulletClass))) targetEl.click();
+        }
+        function updateNavigation() {
+            if (swiper.params.loop || swiper.params.rewind || !swiper.navigation) return;
+            const {nextEl, prevEl} = swiper.navigation;
+            if (prevEl) if (swiper.isBeginning) {
+                disableEl(prevEl);
+                makeElNotFocusable(prevEl);
+            } else {
+                enableEl(prevEl);
+                makeElFocusable(prevEl);
+            }
+            if (nextEl) if (swiper.isEnd) {
+                disableEl(nextEl);
+                makeElNotFocusable(nextEl);
+            } else {
+                enableEl(nextEl);
+                makeElFocusable(nextEl);
+            }
+        }
+        function hasPagination() {
+            return swiper.pagination && swiper.pagination.bullets && swiper.pagination.bullets.length;
+        }
+        function hasClickablePagination() {
+            return hasPagination() && swiper.params.pagination.clickable;
+        }
+        function updatePagination() {
+            const params = swiper.params.a11y;
+            if (!hasPagination()) return;
+            swiper.pagination.bullets.forEach((bulletEl => {
+                if (swiper.params.pagination.clickable) {
+                    makeElFocusable(bulletEl);
+                    if (!swiper.params.pagination.renderBullet) {
+                        addElRole(bulletEl, "button");
+                        addElLabel(bulletEl, params.paginationBulletMessage.replace(/\{\{index\}\}/, utils_elementIndex(bulletEl) + 1));
+                    }
+                }
+                if (bulletEl.matches(classes_to_selector_classesToSelector(swiper.params.pagination.bulletActiveClass))) bulletEl.setAttribute("aria-current", "true"); else bulletEl.removeAttribute("aria-current");
+            }));
+        }
+        const initNavEl = (el, wrapperId, message) => {
+            makeElFocusable(el);
+            if (el.tagName !== "BUTTON") {
+                addElRole(el, "button");
+                el.addEventListener("keydown", onEnterOrSpaceKey);
+            }
+            addElLabel(el, message);
+            addElControls(el, wrapperId);
+        };
+        const handlePointerDown = e => {
+            if (focusTargetSlideEl && focusTargetSlideEl !== e.target && !focusTargetSlideEl.contains(e.target)) preventFocusHandler = true;
+            swiper.a11y.clicked = true;
+        };
+        const handlePointerUp = () => {
+            preventFocusHandler = false;
+            requestAnimationFrame((() => {
+                requestAnimationFrame((() => {
+                    if (!swiper.destroyed) swiper.a11y.clicked = false;
+                }));
+            }));
+        };
+        const onVisibilityChange = e => {
+            visibilityChangedTimestamp = (new Date).getTime();
+        };
+        const handleFocus = e => {
+            if (swiper.a11y.clicked) return;
+            if ((new Date).getTime() - visibilityChangedTimestamp < 100) return;
+            const slideEl = e.target.closest(`.${swiper.params.slideClass}, swiper-slide`);
+            if (!slideEl || !swiper.slides.includes(slideEl)) return;
+            focusTargetSlideEl = slideEl;
+            const isActive = swiper.slides.indexOf(slideEl) === swiper.activeIndex;
+            const isVisible = swiper.params.watchSlidesProgress && swiper.visibleSlides && swiper.visibleSlides.includes(slideEl);
+            if (isActive || isVisible) return;
+            if (e.sourceCapabilities && e.sourceCapabilities.firesTouchEvents) return;
+            if (swiper.isHorizontal()) swiper.el.scrollLeft = 0; else swiper.el.scrollTop = 0;
+            requestAnimationFrame((() => {
+                if (preventFocusHandler) return;
+                swiper.slideTo(swiper.slides.indexOf(slideEl), 0);
+                preventFocusHandler = false;
+            }));
+        };
+        const initSlides = () => {
+            const params = swiper.params.a11y;
+            if (params.itemRoleDescriptionMessage) addElRoleDescription(swiper.slides, params.itemRoleDescriptionMessage);
+            if (params.slideRole) addElRole(swiper.slides, params.slideRole);
+            const slidesLength = swiper.slides.length;
+            if (params.slideLabelMessage) swiper.slides.forEach(((slideEl, index) => {
+                const slideIndex = swiper.params.loop ? parseInt(slideEl.getAttribute("data-swiper-slide-index"), 10) : index;
+                const ariaLabelMessage = params.slideLabelMessage.replace(/\{\{index\}\}/, slideIndex + 1).replace(/\{\{slidesLength\}\}/, slidesLength);
+                addElLabel(slideEl, ariaLabelMessage);
+            }));
+        };
+        const init = () => {
+            const params = swiper.params.a11y;
+            swiper.el.append(liveRegion);
+            const containerEl = swiper.el;
+            if (params.containerRoleDescriptionMessage) addElRoleDescription(containerEl, params.containerRoleDescriptionMessage);
+            if (params.containerMessage) addElLabel(containerEl, params.containerMessage);
+            const wrapperEl = swiper.wrapperEl;
+            const wrapperId = params.id || wrapperEl.getAttribute("id") || `swiper-wrapper-${getRandomNumber(16)}`;
+            const live = swiper.params.autoplay && swiper.params.autoplay.enabled ? "off" : "polite";
+            addElId(wrapperEl, wrapperId);
+            addElLive(wrapperEl, live);
+            initSlides();
+            let {nextEl, prevEl} = swiper.navigation ? swiper.navigation : {};
+            nextEl = utils_makeElementsArray(nextEl);
+            prevEl = utils_makeElementsArray(prevEl);
+            if (nextEl) nextEl.forEach((el => initNavEl(el, wrapperId, params.nextSlideMessage)));
+            if (prevEl) prevEl.forEach((el => initNavEl(el, wrapperId, params.prevSlideMessage)));
+            if (hasClickablePagination()) {
+                const paginationEl = utils_makeElementsArray(swiper.pagination.el);
+                paginationEl.forEach((el => {
+                    el.addEventListener("keydown", onEnterOrSpaceKey);
+                }));
+            }
+            const document = ssr_window_esm_getDocument();
+            document.addEventListener("visibilitychange", onVisibilityChange);
+            swiper.el.addEventListener("focus", handleFocus, true);
+            swiper.el.addEventListener("focus", handleFocus, true);
+            swiper.el.addEventListener("pointerdown", handlePointerDown, true);
+            swiper.el.addEventListener("pointerup", handlePointerUp, true);
+        };
+        function destroy() {
+            if (liveRegion) liveRegion.remove();
+            let {nextEl, prevEl} = swiper.navigation ? swiper.navigation : {};
+            nextEl = utils_makeElementsArray(nextEl);
+            prevEl = utils_makeElementsArray(prevEl);
+            if (nextEl) nextEl.forEach((el => el.removeEventListener("keydown", onEnterOrSpaceKey)));
+            if (prevEl) prevEl.forEach((el => el.removeEventListener("keydown", onEnterOrSpaceKey)));
+            if (hasClickablePagination()) {
+                const paginationEl = utils_makeElementsArray(swiper.pagination.el);
+                paginationEl.forEach((el => {
+                    el.removeEventListener("keydown", onEnterOrSpaceKey);
+                }));
+            }
+            const document = ssr_window_esm_getDocument();
+            document.removeEventListener("visibilitychange", onVisibilityChange);
+            swiper.el.removeEventListener("focus", handleFocus, true);
+            swiper.el.removeEventListener("pointerdown", handlePointerDown, true);
+            swiper.el.removeEventListener("pointerup", handlePointerUp, true);
+        }
+        on("beforeInit", (() => {
+            liveRegion = utils_createElement("span", swiper.params.a11y.notificationClass);
+            liveRegion.setAttribute("aria-live", "assertive");
+            liveRegion.setAttribute("aria-atomic", "true");
+        }));
+        on("afterInit", (() => {
+            if (!swiper.params.a11y.enabled) return;
+            init();
+        }));
+        on("slidesLengthChange snapGridLengthChange slidesGridLengthChange", (() => {
+            if (!swiper.params.a11y.enabled) return;
+            initSlides();
+        }));
+        on("fromEdge toEdge afterInit lock unlock", (() => {
+            if (!swiper.params.a11y.enabled) return;
+            updateNavigation();
+        }));
+        on("paginationUpdate", (() => {
+            if (!swiper.params.a11y.enabled) return;
+            updatePagination();
+        }));
+        on("destroy", (() => {
+            if (!swiper.params.a11y.enabled) return;
+            destroy();
+        }));
+    }
     function Autoplay(_ref) {
         let {swiper, extendParams, on, emit, params} = _ref;
         swiper.autoplay = {
@@ -3416,7 +3701,7 @@
         }
         if (document.querySelector(".founders-slider")) {
             const foundersSlider = new swiper_core_Swiper(".founders-slider", {
-                modules: [ Navigation ],
+                modules: [ Navigation, A11y ],
                 navigation: {
                     nextEl: ".founders-slider-button-next",
                     prevEl: ".founders-slider-button-prev"
@@ -3437,6 +3722,9 @@
                     768: {
                         spaceBetween: 60
                     }
+                },
+                a11y: {
+                    enabled: true
                 }
             });
             const foundersBlockquotes = document.querySelectorAll(".founders__blockquote");
@@ -3451,7 +3739,7 @@
             }));
         }
         if (document.querySelector(".frameworks-slider")) new swiper_core_Swiper(".frameworks-slider", {
-            modules: [ Navigation ],
+            modules: [ Navigation, A11y ],
             navigation: {
                 nextEl: ".frameworks-slider-button-next",
                 prevEl: ".frameworks-slider-button-prev"
@@ -3459,10 +3747,13 @@
             slidesPerView: "auto",
             slidesPerGroup: 1,
             spaceBetween: 15,
-            speed: 1e3
+            speed: 1e3,
+            a11y: {
+                enabled: true
+            }
         });
         if (document.querySelector(".partnership-rules-slider")) new swiper_core_Swiper(".partnership-rules-slider", {
-            modules: [ Navigation ],
+            modules: [ Navigation, A11y ],
             navigation: {
                 nextEl: ".partnership-rules-slider-button-next",
                 prevEl: ".partnership-rules-slider-button-prev"
@@ -3470,7 +3761,10 @@
             slidesPerView: "auto",
             slidesPerGroup: 1,
             spaceBetween: 8,
-            speed: 1e3
+            speed: 1e3,
+            a11y: {
+                enabled: true
+            }
         });
     }
     window.addEventListener("load", (function(e) {
@@ -3485,7 +3779,7 @@
             }));
         }
     }), 0);
-    const listItems = document.querySelectorAll(".postulates__list-item");
+    const listItems = document.querySelectorAll(".postulates__list-item-div");
     const numberItems = document.querySelectorAll(".postulates__number-item");
     const postBckgImgs = document.querySelectorAll(".postulates__background-image");
     const postParagraphs = document.querySelectorAll(".postulates__paragraph");
@@ -3523,9 +3817,6 @@
         item.addEventListener("click", (() => {
             indexPostulates = indexDot;
             prepareCurrentItem(indexPostulates);
-        }));
-        item.addEventListener("mouseleave", (() => {
-            item.style.transitionDelay = "0s";
         }));
     }));
     function watchForHover() {
