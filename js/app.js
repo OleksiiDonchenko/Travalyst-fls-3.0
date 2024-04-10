@@ -3779,11 +3779,46 @@
             }));
         }
     }), 0);
+    const stars = document.querySelectorAll(".sustainably__row-star");
+    const links = document.querySelectorAll(".sustainably__row-link");
+    let starIndex = 0;
+    const activeStar = n => {
+        for (let star of stars) star.classList.remove("active");
+        stars[n].classList.add("active");
+    };
+    const activeLink = n => {
+        for (let link of links) link.classList.remove("active");
+        links[n].classList.add("active");
+    };
+    const prepareCurrentStar = ind => {
+        activeStar(starIndex);
+        activeLink(starIndex);
+    };
+    stars.forEach(((item, ind) => {
+        item.addEventListener("mouseenter", (() => {
+            starIndex = ind;
+            prepareCurrentStar(starIndex);
+        }));
+        item.addEventListener("mouseleave", (() => {
+            stars[ind].classList.remove("active");
+            links[ind].classList.remove("active");
+        }));
+        item.addEventListener("click", (() => {
+            starIndex = ind;
+            for (let i = 0; i < stars.length; i++) if (i !== ind) {
+                stars[i].classList.remove("active");
+                links[i].classList.remove("active");
+            } else {
+                stars[starIndex].classList.toggle("active");
+                links[starIndex].classList.toggle("active");
+            }
+        }));
+    }));
     const listItems = document.querySelectorAll(".postulates__list-item-div");
     const numberItems = document.querySelectorAll(".postulates__number-item");
     const postBckgImgs = document.querySelectorAll(".postulates__background-image");
     const postParagraphs = document.querySelectorAll(".postulates__paragraph");
-    let indexPostulates = 0;
+    let postulateIndex = 0;
     const activeListItem = n => {
         for (let listItem of listItems) listItem.classList.remove("active");
         listItems[n].classList.add("active");
@@ -3804,19 +3839,19 @@
         postParagraphs[n].classList.add("active");
     };
     const prepareCurrentItem = ind => {
-        activeListItem(indexPostulates);
-        activeNumberItem(indexPostulates);
-        activePostBckgImg(indexPostulates);
-        activePostParagraph(indexPostulates);
+        activeListItem(postulateIndex);
+        activeNumberItem(postulateIndex);
+        activePostBckgImg(postulateIndex);
+        activePostParagraph(postulateIndex);
     };
     listItems.forEach(((item, indexDot) => {
         item.addEventListener("mouseenter", (() => {
-            indexPostulates = indexDot;
-            prepareCurrentItem(indexPostulates);
+            postulateIndex = indexDot;
+            prepareCurrentItem(postulateIndex);
         }));
         item.addEventListener("click", (() => {
-            indexPostulates = indexDot;
-            prepareCurrentItem(indexPostulates);
+            postulateIndex = indexDot;
+            prepareCurrentItem(postulateIndex);
         }));
     }));
     function watchForHover() {

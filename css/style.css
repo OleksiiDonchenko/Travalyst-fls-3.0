@@ -891,7 +891,16 @@ body.hasHover .frameworks-slider__slide:hover .frameworks-slider__slide-button {
   visibility: visible;
   pointer-events: all
 }
+.sustainably__row-link.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all
+}
 body.hasHover .sustainably__row-star:hover {
+  background-image: url(../img/main/5th-section-sustainably/white-star.svg);
+  background-color: #0d231f
+}
+.sustainably__row-star.active {
   background-image: url(../img/main/5th-section-sustainably/white-star.svg);
   background-color: #0d231f
 }
@@ -1030,7 +1039,7 @@ body.hasHover .sustainably__row-link a:hover {
   left: -45px;
   font-size: 16px;
   line-height: 21px;
-  padding-left: 12px;
+  padding-left: 2px;
   padding-top: 6px;
   color: #0d231f;
   background-color: #fff;
