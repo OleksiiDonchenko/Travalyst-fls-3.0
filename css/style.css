@@ -457,7 +457,7 @@ body.hasHover .founders-slider__image:hover {
   opacity: 1;
   transition: all .5s ease 0s
 }
-.founders-slider__text h6 {
+.founders-slider__text h4 {
   font-weight: 700
 }
 .founders-slider-button-next,
@@ -563,7 +563,7 @@ body.hasHover .founders-slider__image:hover {
 .frameworks-slider__slide-text {
   position: relative
 }
-.frameworks-slider__slide-text h5 {
+.frameworks-slider__slide-text h3 {
   position: absolute;
   bottom: 28px;
   left: 20px;
@@ -603,7 +603,7 @@ body.hasHover .founders-slider__image:hover {
 .frameworks-slider._active {
   opacity: 1
 }
-body.hasHover .frameworks-slider__slide:hover .frameworks-slider__slide-text h5 {
+body.hasHover .frameworks-slider__slide:hover .frameworks-slider__slide-text h3 {
   bottom: 52px
 }
 body.hasHover .frameworks-slider__slide:hover .frameworks-slider__slide-text p {
@@ -1420,7 +1420,7 @@ body.hasHover .partnership-rules__link:hover {
   }
 }
 @media (max-width:991.98px) {
-  .frameworks-slider__slide-text h5 {
+  .frameworks-slider__slide-text h3 {
     bottom: 52px
   }
   .frameworks-slider__slide-text p {
@@ -1524,7 +1524,7 @@ body.hasHover .partnership-rules__link:hover {
   }
 }
 @media (max-width:439.98px) {
-  .frameworks-slider__slide-text h5 {
+  .frameworks-slider__slide-text h3 {
     max-width: 300px;
     font-size: 28px;
     line-height: 32px
